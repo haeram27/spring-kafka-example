@@ -1,12 +1,7 @@
-pluginManagement {
-    repositories {
-        maven { url abisMavenArtifactoryUrl }
-    }
-}
 dependencyResolutionManagement {
     repositories { 
         mavenLocal()
-        maven { url abisMavenArtifactoryUrl }
+        mavenCentral()
     } 
 }
-rootProject.name = 'kafkac'
+rootProject.name = 'kafka.producer'

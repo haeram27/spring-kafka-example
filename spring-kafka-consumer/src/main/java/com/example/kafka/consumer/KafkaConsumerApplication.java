@@ -1,8 +1,5 @@
-package com.example.kafkac;
+package com.example.kafka.consumer;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,26 +11,20 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
 @Slf4j
-public class KafkaProdApplication {
+public class KafkaConsumerApplication {
 
-    private static AtomicInteger ai = new AtomicInteger(0);
-
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-
-    @Value("${my.hello}")
+    @Value("${start.message}")
     private String hello;
 
     @EventListener
     public void init(ApplicationStartingEvent event) {
         log.info("******** received by event ********" + event.toString());
         log.info(String.valueOf(System.nanoTime()));
+        System.out.println("******** received by event ********" + event.toString());
     }
 
     @EventListener
@@ -64,22 +55,7 @@ public class KafkaProdApplication {
     public void init(ApplicationReadyEvent event) {
         log.info("******** received by event ********" + event.toString());
         log.info(String.valueOf(System.nanoTime()));
-        log.info("${my.hello}");
-        for (var i = 0; i < 3; i++) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        while (true) {
-                            sendMessage("soonwoo", String.valueOf(ai.incrementAndGet()));
-                            Thread.sleep(1000);
-                        }
-                    } catch (Exception e) {
-                        log.error("Exception: ", e);
-                    }
-                }
-            }.start();
-        }
+        log.info("${start.message}");
     }
 
     @EventListener
@@ -88,20 +64,8 @@ public class KafkaProdApplication {
         log.info(String.valueOf(System.nanoTime()));
     }
 
-    public void sendMessage(String topic, String message) {
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, message);
-        future.whenComplete((result, ex) -> {
-            if (ex == null) {
-                log.info("Sent message=[" + message + "] with offset=["
-                        + result.getRecordMetadata().offset() + "]");
-            } else {
-                log.info("Unable to send message=[" + message + "] due to : " + ex.getMessage());
-            }
-        });
-    }
-
     public static void main(String[] args) {
-        SpringApplication.run(KafkaProdApplication.class, args);
+        SpringApplication.run(KafkaConsumerApplication.class, args);
 
         new Thread() {
             @Override
