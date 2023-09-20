@@ -31,18 +31,6 @@
         <!-- PASS -->
         <!-- OPTION#1: Use standard syslog and add fields with LoggerFields -->
         <!-- https://logging.apache.org/log4j/2.x/manual/appenders.html#SyslogAppender -->
-        <Syslog name="syslogudp" format="RFC5424" host="localhost" port="514"
-            protocol="UDP" appName="test" includeMDC="false" mdcId="testlog4j2"
-            facility="LOCAL7" enterpriseNumber="18060" newLine="true"
-            messageId="Audit" id="App">
-            <!-- <LoggerFields>
-                <KeyValuePair key="thread" value="%t"/>
-                <KeyValuePair key="priority" value="%p"/>
-                <KeyValuePair key="category" value="%c"/>
-                <KeyValuePair key="exception" value="%ex"/>
-            </LoggerFields> -->
-        </Syslog>
-
         <Syslog name="syslogtcp" format="RFC5424" host="localhost" port="514"
             protocol="TCP" appName="test" includeMDC="false" mdcId="testlog4j2"
             facility="LOCAL7" enterpriseNumber="18060" newLine="true"
@@ -55,8 +43,20 @@
             </LoggerFields> -->
         </Syslog>
 
+        <Syslog name="syslogudp" format="RFC5424" host="localhost" port="515"
+            protocol="UDP" appName="test" includeMDC="false" mdcId="testlog4j2"
+            facility="LOCAL7" enterpriseNumber="18060" newLine="true"
+            messageId="Audit" id="App">
+            <!-- <LoggerFields>
+                <KeyValuePair key="thread" value="%t"/>
+                <KeyValuePair key="priority" value="%p"/>
+                <KeyValuePair key="category" value="%c"/>
+                <KeyValuePair key="exception" value="%ex"/>
+            </LoggerFields> -->
+        </Syslog>
+
         <!-- NOPASS: invalid frame header -->
-        <Syslog name="syslogngtcp" format="RFC5425" host="localhost" port="6601"
+        <Syslog name="syslogngtcp" format="RFC5424" host="localhost" port="6601"
             protocol="TCP" appName="test" includeMDC="false" mdcId="testlog4j2"
             facility="LOCAL7" enterpriseNumber="18060" newLine="true"
             messageId="Audit" id="App">
@@ -68,7 +68,7 @@
             </LoggerFields> -->
         </Syslog>
 
-        <!-- NOPASS -->
+        <!-- PASS -->
         <Syslog name="syslogngudp" format="RFC5424" host="localhost" port="5514"
             protocol="UDP" appName="test" includeMDC="false" mdcId="testlog4j2"
             facility="LOCAL7" enterpriseNumber="18060" newLine="true"
@@ -137,7 +137,7 @@
         <Root level="info" additivity="false">
             <!-- <AppenderRef ref="file"/> -->
             <!-- <AppenderRef ref="console"/> -->
-            <AppenderRef ref="syslogngtcp" />
+            <AppenderRef ref="syslogngudp" />
         </Root>
 
         <!-- =================================================================== -->

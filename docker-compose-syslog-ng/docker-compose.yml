@@ -14,8 +14,9 @@ services:
     volumes:
       - /etc/syslog-ng:/config
       - /tmp/log:/var/log
-    ports:
-      - 5514:5514/udp
-      - 6601:6601/tcp
-      - 6514:6514/tcp
+    network_mode: host
+    #ports:
+    #  - 5514:5514/udp
+    #  - 6601:6601/tcp
+    #  - 6514:6514/tcp
     restart: unless-stopped
