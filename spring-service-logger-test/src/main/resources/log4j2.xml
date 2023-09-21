@@ -7,18 +7,16 @@
         <Property name="logFile">Log4J2Test</Property>
         <Property name="logFilePath">${logRoot}/logs/${logFile}</Property>
         <!-- Pattern Layout: https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
-        <Property name="layoutPattern">[%d{DEFAULT_MICROS}] %-5level [%pid:%t] %c{1}:%M:%L - %msg%n</Property>
+        <Property name="layoutPattern">[%d{DEFAULT}] %-5level [%pid:%t] %c{1}:%M:%L - %msg%n</Property>
     </Properties>
 
     <Appenders>
         <!-- Appenders: https://logging.apache.org/log4j/2.x/manual/appenders.html -->
 
-        <!-- PASS -->
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="${layoutPattern}" />
         </Console>
 
-        <!-- PASS -->
         <RollingFile name="file" fileName="${logFilePath}.log" filePattern="${logFilePath}_%d{yyyy-MM-dd}.log">
             <PatternLayout pattern="${layoutPattern}" />
             <Policies>
@@ -28,13 +26,9 @@
             <DefaultRolloverStrategy max="30" fileIndex="min" />
         </RollingFile>
 
-        <!-- PASS -->
         <!-- OPTION#1: Use standard syslog and add fields with LoggerFields -->
         <!-- https://logging.apache.org/log4j/2.x/manual/appenders.html#SyslogAppender -->
-        <Syslog name="syslogtcp" format="RFC5424" host="localhost" port="514"
-            protocol="TCP" appName="test" includeMDC="false" mdcId="testlog4j2"
-            facility="LOCAL7" enterpriseNumber="18060" newLine="true"
-            messageId="Audit" id="App">
+        <Syslog name="rsyslog-rfc5424-tcp" format="RFC5424" host="localhost" port="601" protocol="TCP" appName="rsyslog-rfc5424-tcp" includeMDC="false" mdcId="testlog4j2" facility="LOCAL7" enterpriseNumber="18060" newLine="true" messageId="Audit" id="App" reconnectionDelayMillis="500">
             <!-- <LoggerFields>
                 <KeyValuePair key="thread" value="%t"/>
                 <KeyValuePair key="priority" value="%p"/>
@@ -42,91 +36,54 @@
                 <KeyValuePair key="exception" value="%ex"/>
             </LoggerFields> -->
         </Syslog>
+        <Syslog name="rsyslog-rfc5424-udp" format="RFC5424" host="localhost" port="514" protocol="UDP" appName="rsyslog-rfc5424-udp" includeMDC="false" mdcId="testlog4j2" facility="LOCAL7" enterpriseNumber="18060" newLine="true" messageId="Audit" id="App" reconnectionDelayMillis="500" />
+        <Syslog name="rsyslog-rfc3164-tcp" format="RFC3164" host="localhost" port="601" protocol="TCP" appName="rsyslog-rfc3164-tcp" includeMDC="false" mdcId="testlog4j2" facility="LOCAL7" enterpriseNumber="18060" newLine="true" messageId="Audit" id="App" reconnectionDelayMillis="500" />
+        <Syslog name="rsyslog-rfc3164-udp" format="RFC3164" host="localhost" port="514" protocol="UDP" appName="rsyslog-rfc3164-udp" includeMDC="false" mdcId="testlog4j2" facility="LOCAL7" enterpriseNumber="18060" newLine="true" messageId="Audit" id="App" reconnectionDelayMillis="500" />
 
-        <Syslog name="syslogudp" format="RFC5424" host="localhost" port="515"
-            protocol="UDP" appName="test" includeMDC="false" mdcId="testlog4j2"
-            facility="LOCAL7" enterpriseNumber="18060" newLine="true"
-            messageId="Audit" id="App">
-            <!-- <LoggerFields>
-                <KeyValuePair key="thread" value="%t"/>
-                <KeyValuePair key="priority" value="%p"/>
-                <KeyValuePair key="category" value="%c"/>
-                <KeyValuePair key="exception" value="%ex"/>
-            </LoggerFields> -->
-        </Syslog>
+        <Syslog name="syslog-ng-rfc5424-tcp" format="RFC5424" host="localhost" port="6601" protocol="TCP" appName="syslog-ng-rfc5424-tcp" newLine="true" reconnectionDelayMillis="500" />
+        <Syslog name="syslog-ng-rfc5424-udp" format="RFC5424" host="localhost" port="5514" protocol="UDP" appName="syslog-ng-rfc5424-udp" newLine="true" reconnectionDelayMillis="500" />
+        <Syslog name="syslog-ng-rfc3164-tcp" format="RFC3164" host="localhost" port="6601" protocol="TCP" appName="syslog-ng-rfc3164-tcp" newLine="true" reconnectionDelayMillis="500" />
+        <Syslog name="syslog-ng-rfc3164-udp" format="RFC3164" host="localhost" port="5514" protocol="UDP" appName="syslog-ng-rfc3164-udp" newLine="true" reconnectionDelayMillis="500" />
 
-        <!-- NOPASS: invalid frame header -->
-        <Syslog name="syslogngtcp" format="RFC5424" host="localhost" port="6601"
-            protocol="TCP" appName="test" includeMDC="false" mdcId="testlog4j2"
-            facility="LOCAL7" enterpriseNumber="18060" newLine="true"
-            messageId="Audit" id="App">
-            <!-- <LoggerFields>
-                <KeyValuePair key="thread" value="%t"/>
-                <KeyValuePair key="priority" value="%p"/>
-                <KeyValuePair key="category" value="%c"/>
-                <KeyValuePair key="exception" value="%ex"/>
-            </LoggerFields> -->
-        </Syslog>
-
-        <!-- PASS -->
-        <Syslog name="syslogngudp" format="RFC5424" host="localhost" port="5514"
-            protocol="UDP" appName="test" includeMDC="false" mdcId="testlog4j2"
-            facility="LOCAL7" enterpriseNumber="18060" newLine="true"
-            messageId="Audit" id="App">
-            <!-- <LoggerFields>
-                <KeyValuePair key="thread" value="%t"/>
-                <KeyValuePair key="priority" value="%p"/>
-                <KeyValuePair key="category" value="%c"/>
-                <KeyValuePair key="exception" value="%ex"/>
-            </LoggerFields> -->
-        </Syslog>
 
         <!-- OPTION#2: Use socket with explicit pattern -->
-        <Socket name="syslogsocket" host="127.0.0.1" port="514" protocol="TCP">
-            <PatternLayout
-            pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
-                &quot;thread&quot;:&quot;%t&quot;,
-                &quot;priority&quot;:&quot;%p&quot;,
-                &quot;category&quot;:&quot;%c{1}&quot;,
-                &quot;exception&quot;:&quot;%exception&quot;
-                }%n"
-            />
+        <Socket name="rsyslog-socket-tcp" host="127.0.0.1" port="601" protocol="TCP">
+            <PatternLayout pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
+	            &quot;thread&quot;:&quot;%t&quot;,
+	            &quot;priority&quot;:&quot;%p&quot;,
+	            &quot;category&quot;:&quot;%c{1}&quot;,
+	            &quot;exception&quot;:&quot;%exception&quot;
+	        }%n" />
         </Socket>
 
-        <Socket name="syslogngtcpsocket" host="127.0.0.1" port="6601" protocol="TCP">
-            <PatternLayout
-            pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
-                &quot;thread&quot;:&quot;%t&quot;,
-                &quot;priority&quot;:&quot;%p&quot;,
-                &quot;category&quot;:&quot;%c{1}&quot;,
-                &quot;exception&quot;:&quot;%exception&quot;
-                }%n"
-            />
+        <Socket name="rsyslog-socket-udp" host="127.0.0.1" port="514" protocol="UDP">
+            <PatternLayout pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
+	            &quot;thread&quot;:&quot;%t&quot;,
+	            &quot;priority&quot;:&quot;%p&quot;,
+	            &quot;category&quot;:&quot;%c{1}&quot;,
+	            &quot;exception&quot;:&quot;%exception&quot;
+	        }%n" />
         </Socket>
 
-        <!-- PASS -->
-        <Socket name="syslogngudpsocket" host="127.0.0.1" port="5514" protocol="UDP">
-            <PatternLayout
-            pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
-                &quot;thread&quot;:&quot;%t&quot;,
-                &quot;priority&quot;:&quot;%p&quot;,
-                &quot;category&quot;:&quot;%c{1}&quot;,
-                &quot;exception&quot;:&quot;%exception&quot;
-                }%n"
-            />
+        <Socket name="syslog-ng-socket-tcp" host="127.0.0.1" port="6601" protocol="TCP">
+            <PatternLayout pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
+	            &quot;thread&quot;:&quot;%t&quot;,
+	            &quot;priority&quot;:&quot;%p&quot;,
+	            &quot;category&quot;:&quot;%c{1}&quot;,
+	            &quot;exception&quot;:&quot;%exception&quot;
+	        }%n" />
         </Socket>
 
-        <!-- <RelpAppender name="relp"
-            type="RelpAppender"
-            relpAddress="localhost"
-            relpPort="2514"
-            appName="jla_06"
-            hostname="localhost"
-            connectionTimeout="5000"
-            writeTimeout="2000"
-            readTimeout="15000"
-            reconnectInterval="3000"
-            useSD="true"/> -->
+        <Socket name="syslog-ng-socket-udp" host="127.0.0.1" port="5514" protocol="UDP">
+            <PatternLayout pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
+	            &quot;thread&quot;:&quot;%t&quot;,
+	            &quot;priority&quot;:&quot;%p&quot;,
+	            &quot;category&quot;:&quot;%c{1}&quot;,
+	            &quot;exception&quot;:&quot;%exception&quot;
+	        }%n" />
+        </Socket>
+
+        <!-- <RelpAppender name="relp" type="RelpAppender" relpAddress="localhost" relpPort="2514" appName="jla_06" hostname="localhost" connectionTimeout="5000" writeTimeout="2000" readTimeout="15000" reconnectInterval="3000" useSD="true"/> -->
     </Appenders>
 
     <Loggers>
@@ -136,8 +93,8 @@
         <!-- off, fatal, error, warn, info, debug, trace, all -->
         <Root level="info" additivity="false">
             <!-- <AppenderRef ref="file"/> -->
-            <!-- <AppenderRef ref="console"/> -->
-            <AppenderRef ref="syslogngudp" />
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="rsyslog-rfc5424-tcp" />
         </Root>
 
         <!-- =================================================================== -->
