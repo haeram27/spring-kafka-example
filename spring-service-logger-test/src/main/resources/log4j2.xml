@@ -49,41 +49,43 @@
         <!-- OPTION#2: Use socket with explicit pattern -->
         <Socket name="rsyslog-socket-tcp" host="127.0.0.1" port="601" protocol="TCP">
             <PatternLayout pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
-	            &quot;thread&quot;:&quot;%t&quot;,
-	            &quot;priority&quot;:&quot;%p&quot;,
-	            &quot;category&quot;:&quot;%c{1}&quot;,
-	            &quot;exception&quot;:&quot;%exception&quot;
-	        }%n" />
+                &quot;thread&quot;:&quot;%t&quot;,
+                &quot;priority&quot;:&quot;%p&quot;,
+                &quot;category&quot;:&quot;%c{1}&quot;,
+                &quot;exception&quot;:&quot;%exception&quot;
+            }%n" />
         </Socket>
 
         <Socket name="rsyslog-socket-udp" host="127.0.0.1" port="514" protocol="UDP">
             <PatternLayout pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
-	            &quot;thread&quot;:&quot;%t&quot;,
-	            &quot;priority&quot;:&quot;%p&quot;,
-	            &quot;category&quot;:&quot;%c{1}&quot;,
-	            &quot;exception&quot;:&quot;%exception&quot;
-	        }%n" />
+                &quot;thread&quot;:&quot;%t&quot;,
+                &quot;priority&quot;:&quot;%p&quot;,
+                &quot;category&quot;:&quot;%c{1}&quot;,
+                &quot;exception&quot;:&quot;%exception&quot;
+            }%n" />
         </Socket>
 
         <Socket name="syslog-ng-socket-tcp" host="127.0.0.1" port="6601" protocol="TCP">
             <PatternLayout pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
-	            &quot;thread&quot;:&quot;%t&quot;,
-	            &quot;priority&quot;:&quot;%p&quot;,
-	            &quot;category&quot;:&quot;%c{1}&quot;,
-	            &quot;exception&quot;:&quot;%exception&quot;
-	        }%n" />
+                &quot;thread&quot;:&quot;%t&quot;,
+                &quot;priority&quot;:&quot;%p&quot;,
+                &quot;category&quot;:&quot;%c{1}&quot;,
+                &quot;exception&quot;:&quot;%exception&quot;
+            }%n" />
         </Socket>
 
         <Socket name="syslog-ng-socket-udp" host="127.0.0.1" port="5514" protocol="UDP">
             <PatternLayout pattern="&lt;134&gt;%d{MMM dd HH:mm:ss} ${hostName} testlog4j: {
-	            &quot;thread&quot;:&quot;%t&quot;,
-	            &quot;priority&quot;:&quot;%p&quot;,
-	            &quot;category&quot;:&quot;%c{1}&quot;,
-	            &quot;exception&quot;:&quot;%exception&quot;
-	        }%n" />
+                &quot;thread&quot;:&quot;%t&quot;,
+                &quot;priority&quot;:&quot;%p&quot;,
+                &quot;category&quot;:&quot;%c{1}&quot;,
+                &quot;exception&quot;:&quot;%exception&quot;
+            }%n" />
         </Socket>
 
-        <!-- <RelpAppender name="relp" type="RelpAppender" relpAddress="localhost" relpPort="2514" appName="jla_06" hostname="localhost" connectionTimeout="5000" writeTimeout="2000" readTimeout="15000" reconnectInterval="3000" useSD="true"/> -->
+        <RelpAppender name="relp" appName="jla_06" hostname="localhost" relpAddress="localhost" relpPort="2514" connectionTimeout="5000" writeTimeout="2000" readTimeout="15000" reconnectInterval="3000" useSD="false">
+            <PatternLayout pattern="${layoutPattern}" />
+        </RelpAppender>
     </Appenders>
 
     <Loggers>
