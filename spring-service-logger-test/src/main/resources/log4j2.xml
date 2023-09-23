@@ -15,6 +15,7 @@
 
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="${layoutPattern}" />
+            <!-- <PatternLayout pattern="%highlight{${layoutPattern}}{STYLE=Logback}" /> -->
         </Console>
 
         <RollingFile name="file" fileName="${logFilePath}.log" filePattern="${logFilePath}_%d{yyyy-MM-dd}.log">
@@ -96,7 +97,6 @@
         <Root level="info" additivity="false">
             <!-- <AppenderRef ref="file"/> -->
             <AppenderRef ref="console"/>
-            <AppenderRef ref="rsyslog-rfc5424-tcp" />
         </Root>
 
         <!-- =================================================================== -->

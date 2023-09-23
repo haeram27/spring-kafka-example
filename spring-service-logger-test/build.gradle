@@ -17,6 +17,10 @@ configurations {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     // relp support log4j2 library
     // implementation 'com.teragrep:jla_06:1.1.0'
