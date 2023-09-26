@@ -1,7 +1,23 @@
+pluginManagement {
+    repositories {
+        maven { url mavenRepositoryUrl }
+    }
+}
+
 dependencyResolutionManagement {
     repositories { 
-        mavenLocal()
-        mavenCentral()
-    } 
+        maven {
+            url mavenRepositoryUrl
+        }
+    }
 }
+
+startParameter.offline=false
+if(startParameter.offline)
+{
+        println "======================"
+        println "gradle in offline mode"
+        println "======================"
+}
+
 rootProject.name = 'kafka.producer'

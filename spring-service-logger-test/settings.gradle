@@ -1,1 +1,23 @@
+pluginManagement {
+    repositories {
+        maven { url mavenRepositoryUrl }
+    }
+}
+
+dependencyResolutionManagement {
+    repositories { 
+        maven {
+            url mavenRepositoryUrl
+        }
+    }
+}
+
+startParameter.offline=false
+if(startParameter.offline)
+{
+        println "======================"
+        println "gradle in offline mode"
+        println "======================"
+}
+
 rootProject.name = 'syslog.client.syslogng'
