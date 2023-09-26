@@ -1,11 +1,13 @@
 HELP.md
+
+### Gradle ###
 .gradle
+.run/
+build/
+bin/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-build/
-bin/
-running/
 
 ### STS ###
 .apt_generated

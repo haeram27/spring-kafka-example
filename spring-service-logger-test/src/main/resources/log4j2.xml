@@ -3,7 +3,7 @@
     <!-- Configuration layouts: https://logging.apache.org/log4j/2.x/manual/configuration.html -->
 
     <Properties>
-        <Property name="logRoot">running</Property>
+        <Property name="logRoot">.run</Property>
         <Property name="logFile">Log4J2Test</Property>
         <Property name="logFilePath">${logRoot}/logs/${logFile}</Property>
         <!-- Pattern Layout: https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
