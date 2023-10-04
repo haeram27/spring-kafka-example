@@ -27,10 +27,10 @@ dependencies {
 	implementation 'org.springframework.kafka:spring-kafka'
 
     // log4j2 RELP supported library
-	// implementation 'com.teragrep:jla_06:1.1.0'
-	// implementation 'com.teragrep:rlp_01:4.0.0'
-	// implementation 'com.cloudbees:syslog-java-client:1.1.7'
-	implementation files('libs/jla_06-1.1.0.jar', 'libs/rlp_01-4.0.0.jar', 'libs/syslog-java-client-1.1.7.jar')
+	implementation 'com.teragrep:jla_06:1.1.0'
+	implementation 'com.teragrep:rlp_01:4.0.0'
+	implementation 'com.cloudbees:syslog-java-client:1.1.7'
+//	implementation files('libs/jla_06-1.1.0.jar', 'libs/rlp_01-4.0.0.jar', 'libs/syslog-java-client-1.1.7.jar')
 
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testCompileOnly 'org.projectlombok:lombok'
