@@ -3,16 +3,9 @@ package com.example.kafka.producer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
-import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
-import org.springframework.boot.context.event.ApplicationFailedEvent;
-import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
-import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -22,56 +15,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KafkaProducerApplication {
 
-    private static AtomicInteger ai = new AtomicInteger(0);
+    private static AtomicInteger ATOM_INT = new AtomicInteger(0);
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${start.message}")
-    private String hello;
-
-    @EventListener
-    public void init(ApplicationStartingEvent event) {
-        log.info("******** received by event ********" + event.toString());
-        log.info(String.valueOf(System.nanoTime()));
-        System.out.println("******** received by event ********" + event.toString());
-    }
-
-    @EventListener
-    public void init(ApplicationContextInitializedEvent event) {
-        log.info("******** received by event ********" + event.toString());
-        log.info(String.valueOf(System.nanoTime()));
-    }
-
-    @EventListener
-    public void init(ApplicationEnvironmentPreparedEvent event) {
-        log.info("******** received by event ********" + event.toString());
-        log.info(String.valueOf(System.nanoTime()));
-    }
-
-    @EventListener
-    public void init(ApplicationPreparedEvent event) {
-        log.info("******** received by event ********" + event.toString());
-        log.info(String.valueOf(System.nanoTime()));
-    }
-
-    @EventListener
-    public void init(ApplicationStartedEvent event) {
-        log.info("******** received by event ********" + event.toString());
-        log.info(String.valueOf(System.nanoTime()));
-    }
-
     @EventListener
     public void init(ApplicationReadyEvent event) {
-        log.info("******** received by event ********" + event.toString());
-        log.info(String.valueOf(System.nanoTime()));
-        log.info("${start.message}");
         new Thread() {
             @Override
             public void run() {
                 try {
                     while (true) {
-                        sendMessage("haeram27", String.valueOf(ai.incrementAndGet()));
+                        sendMessage("message id: ", String.valueOf(ATOM_INT.incrementAndGet()));
                         Thread.sleep(100);
                     }
                 } catch (Exception e) {
@@ -79,12 +35,6 @@ public class KafkaProducerApplication {
                 }
             }
         }.start();
-    }
-
-    @EventListener
-    public void init(ApplicationFailedEvent event) {
-        log.info("******** received by event ********" + event.toString());
-        log.info(String.valueOf(System.nanoTime()));
     }
 
     public void sendMessage(String topic, String message) {
